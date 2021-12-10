@@ -32,6 +32,6 @@ for j in range(0,91,5):
         y=np.append(y,y[index]+h*vy[index])
         index+=1
     plt.plot(x,y)
-plt.xlim(-1,40)
-plt.ylim(-20)
+plt.xlim(-1,50)
+plt.ylim(0)
 plt.show()
