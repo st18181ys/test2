@@ -1,9 +1,18 @@
-def mul(base=2,exp=8):
-    result=1
-    for i in range(exp):
-        result*=base
-    return result
+from fastapi import FastAPI
 
-print(mul())
-print(mul(4,2))
-print(mul(base=5,exp=3))
+#from database import database
+
+#インスタンス宣言
+#db=database()
+app=FastAPI()
+
+@app.get("/")
+
+async def main():
+
+    #databaseから人数を抽出
+    #dict_list=db.read()
+
+    dict_list=[0,1,2,3,4]
+    #json形式で返す"
+    return {"people":dict_list[1]}

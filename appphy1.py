@@ -18,13 +18,20 @@ index=0
 # j：角度
 # t：経過時間
 for j in range(0,91,5):
-    np.append(vx,20*np.cos(np.radians(j)))
-    np.append(vy,20*np.sin(np.radians(j)))
-    while y[index]>=0:
-        np.append(vx,vx[index]+h*ax)
-        np.append(vy,vy[index]+h*ay)
-        np.append(x,x[index]+h*vx[index])
-        np.append(y,y[index]+h*vy[index])
+    vx=np.array([])
+    vy=np.array([])
+    x=np.array([0])
+    y=np.array([0])
+    index=0
+    vx=np.append(vx,20*np.cos(np.radians(j)))
+    vy=np.append(vy,20*np.sin(np.radians(j)))
+    for i in np.arange(0,5,h):
+        vx=np.append(vx,vx[index]+h*ax)
+        vy=np.append(vy,vy[index]+h*ay)
+        x=np.append(x,x[index]+h*vx[index])
+        y=np.append(y,y[index]+h*vy[index])
         index+=1
-        if index>40:
-            break
+    plt.plot(x,y)
+plt.xlim(-1,40)
+plt.ylim(-20)
+plt.show()
