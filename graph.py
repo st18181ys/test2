@@ -1,10 +1,19 @@
 import matplotlib.pyplot as plt
 import numpy as np
+from database import database
 
-left=np.array(["40","30","20","10","0"])
-height=np.array([100,200,500,300,400])
+db=database()
+dict_list=[]
+people=[]
+for i in 4:
+    dict_list=db.read()
+    people[i]=dict_list[0]["count"]
+time=["time1","time2","time3","current","from_now_on"]
+number=people
+ave=sum(people)/len(people)
+number.append(ave)
 plt.title(" People ")
-plt.plot(left,height,marker="o",color="black",linestyle="dashdot")
+plt.plot(time,number,marker="o",color="black",linestyle="dashdot")
 plt.xlabel("time")
 plt.ylabel("number")
 plt.grid(True)
