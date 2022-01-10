@@ -5,7 +5,7 @@ from database import database
 db=database()
 dict_list=[]
 people=[]
-for i in 4:
+for i in range(0,4):
     dict_list=db.read()
     people[i]=dict_list[0]["count"]
 time=["time1","time2","time3","current","from_now_on"]
