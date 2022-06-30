@@ -15,7 +15,7 @@ dfa = DFA(
 r = dfa.read_input('01')
 print(f"read_input: {r}")
 
-if dfa.accepts_input("01100101001011111111111"):
+if dfa.accepts_input("01101"):
     print('accepted')
 else:
     print('rejected')

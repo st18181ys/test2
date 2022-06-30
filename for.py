@@ -1,18 +1,29 @@
-from fastapi import FastAPI
+import numpy as np
 
-#from database import database
+x1=2
+x2=1
+x3=0
+y1=1.5
+y2=1
+y3=1
+a=np.array([x1,y1])
+b=np.array([x2,y2])
+c=np.array([x3,y3])
 
-#インスタンス宣言
-#db=database()
-app=FastAPI()
+vec_a=a-b
+vec_c=c-b
 
-@app.get("/")
+length_vec_a=np.linalg.norm(vec_a)
+length_vec_c=np.linalg.norm(vec_c)
+inner_product=np.inner(vec_a,vec_c)
+cos=inner_product/(length_vec_a*length_vec_c)
 
-async def main():
+rad=np.arccos(cos)
 
-    #databaseから人数を抽出
-    #dict_list=db.read()
+degree=np.rad2deg(rad)
 
-    dict_list=[0,1,2,3,4]
-    #json形式で返す"
-    return {"people":dict_list[1]}
+print(length_vec_a)
+print(length_vec_c)
+print(inner_product)
+print(cos)
+print(degree)
