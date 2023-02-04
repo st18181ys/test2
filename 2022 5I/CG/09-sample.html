@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://ytaki0801.github.io/lightgl.js"></script>
+    <script type="text/javascript">
+
+
+class Poly {
+  constructor(obj, col) {
+    this.obj = obj;
+    this.col = col;
+  }
+  affine(m) {
+    let i = 0, t, j, t0, t1, t2;
+    while (this.obj[i] != -1) {
+      t = this.obj[i];
+      for (j = 0; j < 3; j++) {
+        t0 = m[0][0] * t[j][0]
+           + m[0][1] * t[j][1]
+           + m[0][2] * t[j][2]
+           + m[0][3] * 1;
+        t1 = m[1][0] * t[j][0]
+           + m[1][1] * t[j][1]
+           + m[1][2] * t[j][2]
+           + m[1][3] * 1;
+        t2 = m[2][0] * t[j][0]
+           + m[2][1] * t[j][1]
+           + m[2][2] * t[j][2]
+           + m[2][3] * 1;
+        t[j][0] = t0; t[j][1] = t1; t[j][2] = t2;
+      }
+      i++;
+    }
+  }
+}
+
+
+obj = [[[0.0,0.0,0.0],[1.0,0.0,0.0],[1.0,1.0,0.0]],
+       [[1.0,1.0,0.0],[0.0,1.0,0.0],[0.0,0.0,0.0]],
+       [[0.0,0.0,0.0],[0.0,0.0,1.0],[0.0,1.0,1.0]],
+       [[0.0,1.0,1.0],[0.0,1.0,0.0],[0.0,0.0,0.0]],
+       -1];
+
+// objをそのまま引数にすると配列の先頭しか渡されたないので、JSONライブラリを使って関数を呼び出す
+let p1 = new Poly(JSON.parse(JSON.stringify(obj)), [1,0,0]);
+p1.affine([[1.0, 0.0, 0.0,-1.0],
+           [0.0, 1.0, 0.0, 0.0],
+           [0.0, 0.0, 1.0, 0.0],
+           [0.0, 0.0, 0.0, 1.0]]);
+let p2 = new Poly(JSON.parse(JSON.stringify(obj)), [0,1,0]);
+p2.affine([[1.0, 0.0, 0.0, 1.0],
+           [0.0, 1.0, 0.0, 0.0],
+           [0.0, 0.0, 1.0, 0.0],
+           [0.0, 0.0, 0.0, 1.0]]);
+
+
+function draw() {
+  const gl = GL.create();
+  let p = p1;
+
+  function pdraw(p) {
+    gl.color(p.col[0], p.col[1], p.col[2]);
+    let i = 0, t, j;
+    gl.begin(gl.TRIANGLES);
+      while (p.obj[i] != -1) {
+        t = p.obj[i];
+        for (j = 0; j < 3; j++)
+          gl.vertex(t[j][0],t[j][1],t[j][2]);
+        i++;
+      }
+    gl.end();
+  }
+
+  gl.onupdate = function(s) {
+    let aX = 0, aY = 0;
+
+    if (GL.keys.SPACE) {
+      if (p == p1) { p = p2; } else { p = p1; }
+    }
+    if (GL.keys.UP)    aX =  5.0 / 180.0 * Math.PI;
+    if (GL.keys.DOWN)  aX = -5.0 / 180.0 * Math.PI;
+    if (GL.keys.LEFT)  aY =  5.0 / 180.0 * Math.PI;
+    if (GL.keys.RIGHT) aY = -5.0 / 180.0 * Math.PI;
+
+    if (aX != 0)
+      p.affine([[1.0, 0.0,           0.0,          0.0],
+                [0.0, Math.cos(aX), -Math.sin(aX), 0.0],
+                [0.0, Math.sin(aX),  Math.cos(aX), 0.0],
+                [0.0, 0.0,           0.0,          1.0]]);
+    if (aY != 0)
+      p.affine([[Math.cos(aY), 0.0, -Math.sin(aY), 0.0],
+                [0.0,          1.0,  0.0,          0.0],
+                [Math.sin(aY), 0.0,  Math.cos(aY), 0.0],
+                [0.0,          0.0,  0.0,          1.0]]);
+  }
+
+  gl.ondraw = function() {
+    gl.clearColor(1.0, 1.0, 1.0, 1.0);
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+    gl.loadIdentity();
+    gl.translate(0.0, 0.0, -5.0);
+    gl.rotate(30, 1.0, 0.0, 0.0);
+    gl.rotate(30, 0.0, 1.0, 0.0);
+
+    pdraw(p1); pdraw(p2);
+  };
+
+  gl.fullscreen();
+  gl.animate();
+  gl.enable(gl.DEPTH_TEST);
+}
+
+    </script>
+  </head>
+<body onload="draw();">
+  <canvas id="glCanvas"></canvas>
+</body>
+
+</html>

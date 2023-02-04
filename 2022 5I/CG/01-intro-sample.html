@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script type="text/javascript">
+
+    function draw() {
+      const canvas = document.getElementById('sample');
+      const context = canvas.getContext('2d');
+
+      context.fillStyle = 'red';
+      context.fillRect(10, 10, 200, 100);
+
+      context.fillStyle = 'green';
+      context.beginPath();
+      context.moveTo(105, 20);
+      context.lineTo(15, 50);
+      context.lineTo(205, 50);
+      context.fill();
+
+      context.fillStyle = 'blue';
+      context.beginPath();
+      context.moveTo(105, 95);
+      context.lineTo(15, 55);
+      context.lineTo(205, 55);
+      context.fill();
+    }
+
+    </script>
+  </head>
+<body onload="draw();">
+  <canvas id="sample" width="250" height="250"></canvas>
+</body>
+
+</html>

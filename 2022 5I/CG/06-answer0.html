@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://ytaki0801.github.io/lightgl.js"></script>
+    <script type="text/javascript">
+
+obj = [[[0.0,1.0,0.0],[[0.0,0.0,0.0],[1.0,0.0,0.0],[1.0,1.0,0.0]]],
+       [[0.0,1.0,0.0],[[1.0,1.0,0.0],[0.0,1.0,0.0],[0.0,0.0,0.0]]],
+       [[1.0,0.0,0.0],[[0.0,0.0,0.0],[0.0,0.0,1.0],[0.0,1.0,1.0]]],
+       [[1.0,0.0,0.0],[[0.0,1.0,1.0],[0.0,1.0,0.0],[0.0,0.0,0.0]]],
+       -1];
+
+let controller0;
+
+window.addEventListener("gamepadconnected", function(e) {
+    controller0 = e.gamepad;
+});
+window.addEventListener("gamepaddisconnected", function(e) {
+    delete e.gamepad;
+});
+
+function draw() {
+  const gl = GL.create();
+  let angleX = 30, angleY = 45;
+
+  gl.onupdate = function(s) {
+    if (controller0 != null) {
+      if (navigator.getGamepads()[0] != controller0) {
+          controller0 = navigator.getGamepads()[0];
+      }
+      angleY += controller0.axes[0] * 5;
+      angleX += controller0.axes[1] * 5;
+    }
+
+    if (GL.keys.UP)    angleX += 5;
+    if (GL.keys.DOWN)  angleX -= 5;
+    if (GL.keys.LEFT)  angleY += 5;
+    if (GL.keys.RIGHT) angleY -= 5;
+  };
+
+  gl.onmousemove = function(e) {
+    if (e.dragging && GL.keys.Z) {
+      angleX += e.deltaY;
+      angleY += e.deltaX;
+      gl.ondraw();
+    }
+  };
+
+  gl.ondraw = function() {
+    gl.clearColor(1.0, 1.0, 1.0, 1.0);
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+    gl.loadIdentity();
+    gl.translate(0.0, 0.0, -5.0);
+    gl.rotate(angleX, 1.0, 0.0, 0.0);
+    gl.rotate(angleY, 0.0, 1.0, 0.0);
+
+    let i = 0, t, c, vs;
+    gl.begin(gl.TRIANGLES);
+      while (obj[i] != -1) {
+        t = obj[i];
+        c = t[0]; gl.color(c[0],c[1],c[2]);
+        vs = t[1];
+        for (j = 0; j < 3; j++)
+          gl.vertex(vs[j][0],vs[j][1],vs[j][2]);
+        i++;
+      }
+    gl.end();
+  };
+
+  gl.fullscreen();
+  gl.animate();
+  gl.enable(gl.DEPTH_TEST);
+}
+
+    </script>
+  </head>
+<body onload="draw();">
+  <canvas id="glCanvas"></canvas>
+</body>
+
+</html>
