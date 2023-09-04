@@ -1,0 +1,28 @@
+<head>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+    <style>
+        .test1{
+          font-family:"Baskerville","Hiragino Kaku Gothic ProN", sans-serif;
+        }
+        .test2{
+          font-family:"Hiragino Kaku Gothic ProN","Baskerville",sans-serif;
+        }
+    </style>
+</head>
+<body bgcolor="#10100E" text="#cccccc">
+    <h1>読んだ書籍</h1>
+    <p class="test1">
+        読んだ書籍
+        <i class="fas fa-caret-right"></i>
+        <a href="/view/hello">小説</a>
+    </p>
+    <form action="/view/create" method="post">
+        <div><input type="text" name="value"></div>
+        <div><input type="submit" value="追加"></div>
+    </form>
+    <div class="test2">
+        {{ range .Books }}
+        <p>{{.}}</p>
+        {{ end }}
+    </div>
+</body>

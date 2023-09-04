@@ -1,0 +1,32 @@
+<head>
+    <title>テストタイトル</title>
+    <script type="text/javascript">
+        function ButtonClick() {
+            var elem_c = document.getElementById("content_area");
+            var elem_copy = elem_c.cloneNode(true);
+            document.body.appendChild(elem_copy);
+        }
+    </script>
+</head>
+<body>
+    <div>
+        <input type="button" onclick="ButtonClick();" value="複製">
+    </div>
+    <div id="content_area">
+        <p>
+            <input type="text" name="比較対象" placeholder="比較対象">
+        </p>
+        <form action="#" method="post">
+            <label>
+                <input type="text" name="基準１" placeholder="基準１">
+                <input type="range" id="range" min="1" max="5" step="1" value="3" list="tlist">
+                    <datalist id="tlist">
+                        <option value="2"></option>
+                        <option value="3"></option>
+                        <option value="4"></option>
+                    </datalist>
+                <input type="text" name="基準２" placeholder="基準２">
+            </label>
+        </form>
+    </div>
+</body>
